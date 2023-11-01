@@ -156,10 +156,10 @@ function abrirModalEdicion(datosPlan) {
 
 
     // Establece los valores de los campos con los datos de la Plan
-    nombreEdicion.value = datosPlan.nombre;
-    DescripcionEdicion.value = datosPlan.descripcion;
-    valorEdicion.value = datosPlan.valor;
-    fechaEdicion.value = datosPlan.fecha;
+    nombreEdicion.value = datosPlan.name;
+    DescripcionEdicion.value = datosPlan.description;
+    valorEdicion.value = datosPlan.value;
+    fechaEdicion.value = datosPlan.creationDate;
    
 
     // Abre el modal de edición
@@ -266,6 +266,7 @@ function guardarEdicion() {
    
     const id = fila.dataset.usuarioId;
     var editPlan = {
+        id: id,
         name: name,
         description: descripcion,
         value: valor,
@@ -273,6 +274,24 @@ function guardarEdicion() {
     };
     actualizarUsuario( {editPlan});
 
+    var editPersona = {
+        id: id,
+        name:nombre,
+        lastName: apellido,
+        address:direccion,
+        neighborhood: barrio,
+        birthDate: fechaNac,
+        email: email,
+        phoneNumber: telefono ,
+        numDocument: numDoc,
+        idTipoDocumento: tipoDoc,
+        idRol: rol,
+        idPlan: plan,
+        photo: fotoPerfil,
+        fechaDesdePlan: fechaInicio,
+        fechaHastaPlan: fechaFin
+    }
+    
     $('#editarModal').modal('hide');
 }
 function actualizarUsuario(datosPlan) {

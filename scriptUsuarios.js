@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Realiza la solicitud para obtener la lista de Usuarios
     obtenerYMostrarUsuarios();
 
+    llenarSelectDesdeBackend('https://localhost:8080/gymbuddy/api/persona/documento/all', 'tipoDocCreacion');
+
+    // Llenar opciones para Rol
+    llenarSelectDesdeBackend('https://localhost:8080/gymbuddy/api/user/roles/all', 'rolCreacion');
+
+    // Llenar opciones para Plan
+    llenarSelectDesdeBackend('https://localhost:8080/gymbuddy/api/planes/all', 'planCreacion');
     // Agrega un listener al formulario de creación
     const formularioCreacion = document.getElementById('formulario-creacion');
     formularioCreacion.addEventListener('submit', function(event) {
@@ -83,6 +90,34 @@ function obtenerUsuarioPorId(id) {
             mostrarUsuariosEnTabla(usuarios);
 
 });
+
+function llenarSelectDesdeBackend(url, idSelect) {
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error al obtener datos desde ${url}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Llenar el select con los datos obtenidos desde el backend
+            const select = document.getElementById(idSelect);
+
+            // Limpiar opciones existentes
+            select.innerHTML = '<option value=""></option>';
+
+            // Agregar las nuevas opciones
+            data.forEach(opcion => {
+                const optionElement = document.createElement('option');
+                optionElement.value = opcion.id;
+                optionElement.textContent = opcion.name; // Ajusta esto según la estructura de tus datos
+                select.appendChild(optionElement);
+            });
+        })
+        .catch(error => {
+            console.error(`Error: ${error.message}`);
+        });
+}
 
 function obtenerYMostrarUsuarios() {
     fetch('http://localhost:8080/gymbuddy/api/persona/all')
@@ -328,7 +363,13 @@ function guardarEdicion() {
     const fechaInicio = document.getElementById('fechaInicioEdicion').value;
     const fechaFin = document.getElementById('fechaFinEdicion').value;
 
+   
+    const fila = document.querySelector('.editar-btn:focus').closest('tr');
+   
+    const id = fila.dataset.usuarioId;
+
     var editPersona = {
+        id: id,
         name:nombre,
         lastName: apellido,
         address:direccion,
@@ -345,12 +386,6 @@ function guardarEdicion() {
         fechaHastaPlan: fechaFin
     }
     
-   
-    const fila = document.querySelector('.editar-btn:focus').closest('tr');
-
-   
-    const id = fila.dataset.usuarioId;
-
     actualizarUsuario(editPersona);
 
     $('#editarModal').modal('hide');
@@ -373,3 +408,4 @@ function actualizarUsuario(datosUsuario) {
         console.error('Error:', error);
     });
 }
+

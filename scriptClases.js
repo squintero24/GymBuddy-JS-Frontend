@@ -10,13 +10,21 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault(); // Evita que el formulario se envíe normalmente
 
         // Recupera los datos del formulario
-        const nombre = document.getElementById('nombre').value;
+        const nombre = document.getElementById('nombreCreacion').value;
+        const descripcion = document.getElementById('DescripcionCreacion').value;
         const fechaCreacion = document.getElementById('fechaCreacion').value;
         const fechaFin = document.getElementById('fechaFin').value;
+        const foto = document.getElementById('foto').value;
 
-
+        var nuevaClase ={
+            nombreClase: nombre,
+            descripcionClase: descripcion,
+            inicioClase: fechaCreacion,
+            finClase: fechaFin,
+            foto: foto
+        }
         // Realiza la solicitud para crear una nueva sesión
-        crearClase({ nombre, fechaCreacion, fechaFin});
+        crearClase({nuevaClase});
 
         // Limpia el formulario
         formularioCreacion.reset();
@@ -144,12 +152,16 @@ function abrirModalEdicion(datosClase) {
     const nombreEdicion = document.getElementById('nombreEdicion');
     const fechaCreacionEdicion = document.getElementById('fechaCreacionEdicion');
     const fechaFinEdicion = document.getElementById('fechaFinEdicion');
+    const descripcionEdicion = document.getElementById('descripcionEdicion');
+    const fotoEdicion = document.getElementById('fotoEdicion');
 
 
     // Establece los valores de los campos con los datos de la clase
-    nombreEdicion.value = datosClase.nombre;
-    fechaCreacionEdicion.value = datosClase.fechaCreacion;
-    fechaFinEdicion.value = datosClase.fechaFin;
+    nombreEdicion.value = datosClase.nombreClase;
+    descripcionEdicion.value = datosClase.descripcionClase;
+    fechaCreacionEdicion.value = datosClase.inicioClase;
+    fechaFinEdicion.value = datosClase.finClase;
+    fotoEdicion.value = datosClase.foto;
    
 
     // Abre el modal de edición
@@ -170,19 +182,27 @@ btnCrearClase.addEventListener('click', function() {
 
 
 function guardarCreacion() {
-    // Recupera los datos del formulario de creación
+    // Recupera los datos del formulario de creación  
     const nombre = document.getElementById('nombreCreacion').value;
+    const descripcion = document.getElementById('DescripcionCreacion').value;
     const fechaCreacion = document.getElementById('fechaCreacion').value;
     const fechaFin = document.getElementById('fechaFin').value;
+    const foto = document.getElementById('foto').value;
 
-
-    if (!nombre || !fechaCreacion || !fechaFin) {
+    if (!nombre || !fechaCreacion || !fechaFin || !descripcion) {
         alert('Todos los campos son obligatorios. Por favor, complete todos los campos.');
         return;
     }
     
+    var nuevaClase ={
+        nombreClase: nombre,
+        descripcionClase: descripcion,
+        inicioClase: fechaCreacion,
+        finClase: fechaFin,
+        foto: foto
+    }
     // Realiza la solicitud para crear una nueva clase
-    crearClase({ nombre, fechaCreacion, fechaFin });
+    crearClase(nuevaClase);
 
     // Cierra el modal después de crear la clase
     $('#crearModal').modal('hide');
@@ -240,6 +260,9 @@ function guardarEdicion() {
     const nombre = document.getElementById('nombreEdicion').value;
     const fechaInicio = document.getElementById('fechaCreacionEdicion').value;
     const fechaFin = document.getElementById('fechaFinEdicion').value;
+    const descripcion = document.getElementById('descripcionEdicion').value;
+    const foto = document.getElementById('fotoEdicion').value;
+
 
    
     const fila = document.querySelector('.editar-btn:focus').closest('tr');
@@ -247,7 +270,16 @@ function guardarEdicion() {
    
     const id = fila.dataset.usuarioId;
 
-    actualizarUsuario( { id, nombre, fechaInicio, fechaFin});
+    var editClase ={
+        id:id,
+        nombreClase: nombre,
+        descripcionClase: descripcion,
+        inicioClase: fechaCreacion,
+        finClase: fechaFin,
+        foto: foto
+    }
+
+    actualizarUsuario(editClase);
 
     $('#editarModal').modal('hide');
 }
