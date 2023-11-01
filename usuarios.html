@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <a class="navbar-brand" href="/indexGym.html">
+            <img src="/1.png" alt="Logo de la app" width="30" height="30"  class="d-inline-block align-top">
+            Gym Buddy</a>
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link" href="clasees.html">Clases</a>
+            <a class="nav-item nav-link" href="usuarios.html">Usuarios</a>
+            <a class="nav-item nav-link" href="planes.html">Planes</a>
+        </div>
+    </nav>
+
+    <div class="container-tabla">
+        
+        <div class="tittle-button">
+            <h2 class="tittle">Lista de Usuarios</h2>
+            <button class="button crear-usuario" type="button" onclick="crearUsuario()" data-toggle="modal" data-target="#creararModal">Crear Usuario</button>
+        </div>
+        <div class="form-group">
+            <label for="buscador">Buscar:</label>
+            <input type="text" class="form-control" id="buscador" placeholder="Ingrese término de búsqueda">
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <!-- <th scope="col">ID</th> -->
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Direccion</th>
+                    <th scope="col">Teleofno</th>
+                    <th scope="col">Fecha finalizacion</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaUsuarios">
+                
+            </tbody>
+        </table>
+    </div>
+
+
+<!-- Modal para la creación -->
+<div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crearModalLabel">Crear nuevo Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formulario-creacion">
+                    <!-- Campos de creación -->
+                    <div class="form-group">
+                        <label for="nombreCreacion">Nombres:</label>
+                        <input type="text" class="form-control" id="nombreCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoCreacion">Apellidos:</label>
+                        <input type="text" class="form-control" id="apellidoCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccionCreacion">Dirección:</label>
+                        <input type="text" class="form-control" id="direccionCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="barrioCreacion">Barrio:</label>
+                        <input type="text" class="form-control" id="barrioCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaNaciCreacion">Fecha de nacimiento:</label>
+                        <input type="date" class="form-control" id="fechaNaciCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailCreacion">Email:</label>
+                        <input type="email" class="form-control" id="emailCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefonoCreacion">Telefono:</label>
+                        <input type="tel" class="form-control" id="telefonoCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoDocCreacion">Tipo de Documento</label>
+                        <select class="form-control" id="tipoDocCreacion">
+                            <option value=""></option>
+                            <option value="1">Tarjeta de identidad</option>
+                            <option value="2">Cedula de ciudadania</option>
+                            <option value="3">Cedula de extranjeria</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroDocuCreacion">Numero de documento</label>
+                        <input type="number" class="form-control" id="numeroDocuCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rolCreacion">Rol</label>
+                        <select class="form-control" id="rolCreacion">
+                            <option value=""></option>
+                            <option value="1">Entrenador</option>
+                            <option value="2">Miembro del gimnasio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="planCreacion">Plan</label>
+                        <select class="form-control" id="planCreacion">
+                            <option value=""></option>
+                            <option value="1">Semanal</option>
+                            <option value="2">Mensual</option>
+                            <option value="3">Trimestral</option>
+                            <option value="4">Semestral</option>
+                            <option value="5">Anual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fotoCreacion">Foto de perfil</label>
+                        <input type="file" class="form-control" id="fotoCreacion">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaInicioCreacion">Fecha de inicio del plan:</label>
+                        <input type="date" class="form-control" id="fechaInicioCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFinCreacion">Fecha de finalización del plan:</label>
+                        <input type="date" class="form-control" id="fechaFinCreacion" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarCreacion()">Crear Usuario</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Modal para la edición -->
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarModalLabel">Editar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formulario-edicion">
+                    <!-- Campos de edición -->
+                    <div class="form-group">
+                        <label for="nombreEdicion">Nombres:</label>
+                        <input type="text" class="form-control" id="nombreEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidoEdicion">Apellidos:</label>
+                        <input type="text" class="form-control" id="apellidoEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="direccionEdicion">Dirección:</label>
+                        <input type="text" class="form-control" id="direccionEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="barrioEdicion">Barrio:</label>
+                        <input type="text" class="form-control" id="barrioEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaNaciEdicion">Fecha de nacimiento:</label>
+                        <input type="date" class="form-control" id="fechaNaciEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailEdicion">Email:</label>
+                        <input type="email" class="form-control" id="emailEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefonoEdicion">Telefono:</label>
+                        <input type="tel" class="form-control" id="telefonoEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipoDocEdicion">Tipo de Documento</label>
+                        <select class="form-control" id="tipoDocEdicion">
+                            <option value=""></option>
+                            <option value="1">Tarjeta de identidad</option>
+                            <option value="2">Cedula de ciudadania</option>
+                            <option value="3">Cedula de extranjeria</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroDocuEdicion">Numero de documento</label>
+                        <input type="number" class="form-control" id="numeroDocuEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="rolEdicion">Rol</label>
+                        <select class="form-control" id="rolEdicion">
+                            <option value=""></option>
+                            <option value="1">Entrenador</option>
+                            <option value="2">Miembro del gimnasio</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="planEdicion">Plan</label>
+                        <select class="form-control" id="planEdicion">
+                            <option value=""></option>
+                            <option value="1">Semanal</option>
+                            <option value="2">Mensual</option>
+                            <option value="3">Trimestral</option>
+                            <option value="4">Semestral</option>
+                            <option value="5">Anual</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="fotoEdicion">Foto de perfil</label>
+                        <input type="file" class="form-control" id="fotoEdicion">
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaInicioEdicion">Fecha de inicio del plan:</label>
+                        <input type="date" class="form-control" id="fechaInicioEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFinEdicion">Fecha de finalización del plan:</label>
+                        <input type="date" class="form-control" id="fechaFinEdicion" required>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar cambios</button>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="scriptUsuarios.js"></script>
+
+</body>
+</html>

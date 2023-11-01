@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <a class="navbar-brand" href="/indexGym.html">
+            <img src="/1.png" alt="Logo de la app" width="30" height="30"  class="d-inline-block align-top">
+            Gym Buddy</a>
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link" href="clasees.html">Clases</a>
+            <a class="nav-item nav-link" href="usuarios.html">Usuarios</a>
+            <a class="nav-item nav-link" href="planes.html">Planes</a>
+
+        </div>
+    </nav>
+
+    <div class="container-tabla">
+        
+        <div class="tittle-button">
+            <h2 class="tittle">Lista de Planes</h2>
+            <button class="button crear-plan" type="button" onclick="crearPlan()" data-toggle="modal" data-target="#creararModal">Crear Plan</button>
+        </div>
+        <div class="form-group">
+            <label for="buscador">Buscar:</label>
+            <input type="text" class="form-control" id="buscador" placeholder="Ingrese término de búsqueda">
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Valor</th>
+                    <th scope="col">Fecha de creacion</th>
+                    <th scope="col">Opciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaPlanes">
+                
+            </tbody>
+        </table>
+    </div>
+
+
+<!-- Modal para la creación -->
+<div class="modal fade" id="crearModal" tabindex="-1" role="dialog" aria-labelledby="crearModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="crearModalLabel">Crear Nuevo Plan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formulario-creacion">
+                    <!-- Campos de creación -->
+                    <div class="form-group">
+                        <label for="nombreCreacion">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="DescripcionCreacion">Descripción:</label>
+                        <textarea id="DescripcionCreacion" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="valorCreacion">Valor:</label>
+                        <input type="number" class="form-control" id="valorCreacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaCreacion">Fecha y de creación:</label>
+                        <input type="date" class="form-control" id="fechaCreacion" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarCreacion()">Crear Plan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Modal para la edición -->
+<div class="modal fade" id="editarModal" tabindex="-1" role="dialog" aria-labelledby="editarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarModalLabel">Editar Plan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formulario-edicion">
+                    <!-- Campos de edición -->
+                    <div class="form-group">
+                        <label for="nombreEdicion">Nombre:</label>
+                        <input type="text" class="form-control" id="nombreEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="DescripcionEdicion">Descripción:</label>
+                        <textarea id="DescripcionEdicion" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="valorEdicion">Valor:</label>
+                        <input type="number" class="form-control" id="valorEdicion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaEdicion">Fecha y de creación:</label>
+                        <input type="date" class="form-control" id="fechaEdicion" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarEdicion()">Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="scriptPlanes.js"></script>
+
+</body>
+</html>

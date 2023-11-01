@@ -1,0 +1,87 @@
+body {
+    background-image: url('wallpaperflare.com_wallpaper.jpg'); /* Reemplaza 'tu-imagen-de-fondo.jpg' con la ruta de tu imagen */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+
+    margin: 0;
+    padding-top: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container{
+    background-color: rgb(26, 24, 22);
+    
+    gap: 20px;
+    .tittle{
+        color: rgb(131, 0, 0);
+    }
+    .premisa{
+        color: white;
+    }
+}
+
+.container-tabla{
+    background-color: rgb(26, 24, 22);
+    color: white;
+    padding: 20px;
+    gap: 20px;
+    .tittle{
+        color: rgb(131, 0, 0) !important;
+    }
+
+    .tittle-button {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        .crear-sesion {
+            justify-content: end;
+            
+        }
+    }
+    
+}
+
+.navbar{
+    background-color: rgb(26, 24, 22);
+}
+#login-container {
+    background-color: rgb(26, 24, 22);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+#login{
+    color: rgb(131, 0, 0);
+    
+}
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
