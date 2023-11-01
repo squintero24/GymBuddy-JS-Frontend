@@ -1,9 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Espera a que el DOM esté completamente cargado
-
-    // Realiza la solicitud para obtener la lista de Clases
-    obtenerYMostrarClases();
-
+document.addEventListener('DOMContentLoaded', async function() {
+   
     // Agrega un listener al formulario de creación
     const formularioCreacion = document.getElementById('formulario-creacion');
     formularioCreacion.addEventListener('submit', function(event) {
@@ -62,26 +58,40 @@ document.addEventListener('DOMContentLoaded', function() {
             abrirModalEdicion(clase);
     }
 });
-function obtenerClasePorId(id) {
-    
-    return clases.find(clase => clase.id == id);
-}
 
-    const inputBuscador = document.getElementById('buscador');
+obtenerYMostrarClases().then(clases => {
+    // Ahora puedes usar clases en otras partes de tu código
+    // ...
 
-            // Agrega un listener al campo de búsqueda
-            inputBuscador.addEventListener('input', function() {
-                const terminoBusqueda = inputBuscador.value.toLowerCase();
-                filtrarClases(terminoBusqueda);
-            })
-
-    
-            mostrarClasesEnTabla(clases);
-
+    // Asegúrate de llamar a obtenerClasePorId después de que se hayan cargado las clases
+    const clase = obtenerClasePorId(id, clases);
+    abrirModalEdicion(clase);
 });
 
+// Modifica obtenerClasePorId para aceptar el array de clases como argumento
+
+function obtenerClasePorId(id, clases) {
+    return clases.find(clase => clase.id === id);
+}
+
+const inputBuscador = document.getElementById('buscador');
+
+            // Agrega un listener al campo de búsqueda
+    inputBuscador.addEventListener('input', function() {
+            const terminoBusqueda = inputBuscador.value.toLowerCase();
+            filtrarClases(terminoBusqueda);
+    })
+
+    
+mostrarClasesEnTabla(clases);
+
+});
+function obtenerClasePorId(id, clases) {
+    return clases.find(clase => clase.id === id);
+}
+
 function obtenerYMostrarClases() {
-    fetch('http://localhost:8080/gymbuddy/api/entrenamiento/all')
+    return fetch('http://localhost:8080/gymbuddy/api/entrenamiento/all')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener las Clases');
@@ -91,11 +101,13 @@ function obtenerYMostrarClases() {
         .then(clases => {
             // Llama a la función para mostrar las clases en la tabla
             mostrarClasesEnTabla(clases);
+            return clases; // Devuelve las clases para que estén disponibles externamente
         })
         .catch(error => {
             console.error('Error:', error);
         });
-};
+}
+
 const ejemploClase = [
     { id: 1, nombre: 'Sesión 1', fechaCreacion: '2023-10-27 16:30:00', fechaFin: '2023-10-27 14:30:00' },
     { id: 2, nombre: 'Sesión 2', fechaCreacion: '2023-10-28 08:30:00', fechaFin: '2023-10-27 10:30:00' },
@@ -113,9 +125,9 @@ function mostrarClasesEnTabla(clases) {
     // Itera sobre las clases y agrega filas a la tabla
     clases.forEach(clase => {
         const fila = `<tr data-id="${clase.id}">
-            <td>${clase.nombre}</td>
-            <td>${clase.fechaCreacion}</td>
-            <td>${clase.fechaFin}</td>
+            <td>${clase.nombreClase}</td>
+            <td>${clase.inicioClase}</td>
+            <td>${clase.finClase}</td>
             <td>
                 <button type="button" class="btn btn-primary editar-btn" data-toggle="modal" data-target="#editarModal">
                     Editar
@@ -256,30 +268,26 @@ function eliminarRegistro(id) {
 
 
 function guardarEdicion() {
-    
     const nombre = document.getElementById('nombreEdicion').value;
     const fechaInicio = document.getElementById('fechaCreacionEdicion').value;
     const fechaFin = document.getElementById('fechaFinEdicion').value;
     const descripcion = document.getElementById('descripcionEdicion').value;
     const foto = document.getElementById('fotoEdicion').value;
 
-
-   
     const fila = document.querySelector('.editar-btn:focus').closest('tr');
+    const id = fila.dataset.id; // Corregir el nombre del atributo
 
-   
-    const id = fila.dataset.usuarioId;
-
-    var editClase ={
-        id:id,
+    var editClase = {
+        id: id,
         nombreClase: nombre,
         descripcionClase: descripcion,
-        inicioClase: fechaCreacion,
+        inicioClase: fechaInicio, // Corregir el nombre de la variable
         finClase: fechaFin,
         foto: foto
     }
 
-    actualizarUsuario(editClase);
+    // Pasar ambos argumentos a la función actualizarUsuario
+    actualizarUsuario(id, editClase);
 
     $('#editarModal').modal('hide');
 }

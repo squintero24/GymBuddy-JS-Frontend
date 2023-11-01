@@ -13,14 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const name = document.getElementById('nombreCreacion').value;
         const descripcion = document.getElementById('DescripcionCreacion').value;
         const valor = document.getElementById('valorCreacion').value;
-        const fecha = document.getElementById('fechaCreacion').value;
+
 
 
         var newplam = {
             name: name,
             description: descripcion,
-            value: valor,
-            creationDate: fecha
+            value: valor
         };
         // Realiza la solicitud para crear una nueva sesión
         crearPlan(newplam);
@@ -80,7 +79,7 @@ function obtenerPlanPorId(id) {
 });
 
 function obtenerYMostrarPlanes() {
-    fetch('https://localhost:8080/gymbuddy/api/planes/all')
+    fetch('http://localhost:8080/gymbuddy/api/planes/all')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener los Planes');
@@ -128,7 +127,7 @@ function mostrarPlanesEnTabla(planes) {
 };
 
 function crearPlan(datosPlan) {
-    fetch('https://localhost:8080/gymbuddy/api/planes/create', {
+    fetch('http://localhost:8080/gymbuddy/api/planes/create', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -152,15 +151,13 @@ function abrirModalEdicion(datosPlan) {
     const nombreEdicion = document.getElementById('nombreEdicion');
     const DescripcionEdicion = document.getElementById('DescripcionEdicion');
     const valorEdicion = document.getElementById('valorEdicion');
-    const fechaEdicion = document.getElementById('fechaEdicion');
 
 
     // Establece los valores de los campos con los datos de la Plan
     nombreEdicion.value = datosPlan.name;
     DescripcionEdicion.value = datosPlan.description;
     valorEdicion.value = datosPlan.value;
-    fechaEdicion.value = datosPlan.creationDate;
-   
+
 
     // Abre el modal de edición
     $('#editarModal').modal('show');
@@ -173,7 +170,6 @@ btnCrearPlan.addEventListener('click', function() {
      document.getElementById('nombreCreacion').value = '';
      document.getElementById('DescripcionCreacion').value = '';
      document.getElementById('valorCreacion').value = '';
-     document.getElementById('fechaCreacion').value = '';
  
     // Abre el modal de creación al hacer clic en el botón
     $('#crearModal').modal('show');
@@ -185,10 +181,9 @@ function guardarCreacion() {
     const name = document.getElementById('nombreCreacion').value;
     const descripcion = document.getElementById('DescripcionCreacion').value;
     const valor = document.getElementById('valorCreacion').value;
-    const fecha = document.getElementById('fechaCreacion').value;
 
 
-    if (!name || !descripcion || !valor || !fecha) {
+    if (!name || !descripcion || !valor ) {
         alert('Todos los campos son obligatorios. Por favor, complete todos los campos.');
         return;
     }
@@ -196,8 +191,7 @@ function guardarCreacion() {
     var newplam = {
         name: name,
         description: descripcion,
-        value: valor,
-        creationDate: fecha
+        value: valor
     };
     // Realiza la solicitud para crear una nueva Plan
     crearPlan(newplam);
@@ -239,7 +233,7 @@ document.querySelectorAll('.eliminar-btn').forEach(btn => {
 
 
 function eliminarRegistro(id) {
-    fetch(`https://localhost:8080/gymbuddy/api/planes/delete//${id}`, {
+    fetch(`http://localhost:8080/gymbuddy/api/planes/delete//${id}`, {
         method: 'DELETE',
     })
     .then(response => {
@@ -259,7 +253,6 @@ function guardarEdicion() {
     const name = document.getElementById('nombreEdicion').value;
     const descripcion = document.getElementById('DescripcionEdicion').value;
     const valor = document.getElementById('valorEdicion').value;
-    const fecha = document.getElementById('fechaEdicion').value;
    
     const fila = document.querySelector('.editar-btn:focus').closest('tr');
 
@@ -269,33 +262,14 @@ function guardarEdicion() {
         id: id,
         name: name,
         description: descripcion,
-        value: valor,
-        creationDate: fecha
+        value: valor
     };
     actualizarUsuario( {editPlan});
-
-    var editPersona = {
-        id: id,
-        name:nombre,
-        lastName: apellido,
-        address:direccion,
-        neighborhood: barrio,
-        birthDate: fechaNac,
-        email: email,
-        phoneNumber: telefono ,
-        numDocument: numDoc,
-        idTipoDocumento: tipoDoc,
-        idRol: rol,
-        idPlan: plan,
-        photo: fotoPerfil,
-        fechaDesdePlan: fechaInicio,
-        fechaHastaPlan: fechaFin
-    }
     
     $('#editarModal').modal('hide');
 }
 function actualizarUsuario(datosPlan) {
-    fetch(`https://localhost:8080/gymbuddy/api/planes/update`, {
+    fetch(`http://localhost:8080/gymbuddy/api/planes/update`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

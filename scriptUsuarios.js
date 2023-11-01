@@ -4,13 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Realiza la solicitud para obtener la lista de Usuarios
     obtenerYMostrarUsuarios();
 
-    llenarSelectDesdeBackend('https://localhost:8080/gymbuddy/api/persona/documento/all', 'tipoDocCreacion');
+    llenarSelectDesdeBackend('http://localhost:8080/gymbuddy/api/persona/documento/all', 'tipoDocCreacion');
 
     // Llenar opciones para Rol
-    llenarSelectDesdeBackend('https://localhost:8080/gymbuddy/api/user/roles/all', 'rolCreacion');
+    llenarSelectDesdeBackend('http://localhost:8080/gymbuddy/api/user/roles/all', 'rolCreacion');
 
     // Llenar opciones para Plan
-    llenarSelectDesdeBackend('https://localhost:8080/gymbuddy/api/planes/all', 'planCreacion');
+    llenarSelectDesdeBackend('http://localhost:8080/gymbuddy/api/planes/all', 'planCreacion');
     // Agrega un listener al formulario de creación
     const formularioCreacion = document.getElementById('formulario-creacion');
     formularioCreacion.addEventListener('submit', function(event) {
