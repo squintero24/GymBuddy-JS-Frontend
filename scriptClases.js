@@ -89,7 +89,7 @@ mostrarClasesEnTabla(clases);
 function obtenerClasePorId(id, clases) {
     return clases.find(clase => clase.id === id);
 }
-
+let globalCurrentData = null;
 function obtenerYMostrarClases() {
     return fetch('http://localhost:8080/gymbuddy/api/entrenamiento/all')
         .then(response => {
@@ -101,7 +101,7 @@ function obtenerYMostrarClases() {
         .then(clases => {
             // Llama a la función para mostrar las clases en la tabla
             mostrarClasesEnTabla(clases);
-            return clases; // Devuelve las clases para que estén disponibles externamente
+            globalCurrentData = clases;// Devuelve las clases para que estén disponibles externamente
         })
         .catch(error => {
             console.error('Error:', error);
@@ -132,7 +132,7 @@ function mostrarClasesEnTabla(clases) {
                 <button type="button" class="btn btn-primary editar-btn" data-toggle="modal" data-target="#editarModal">
                     Editar
                 </button>
-                <button type="button" class="btn btn-danger eliminar-btn">Eliminar</button>
+                <button type="button" class="btn btn-danger eliminar-btn" onclick="eliminarRegistro(this)">Eliminar</button>
             </td>
         </tr>`;
         tabla.innerHTML += fila;
@@ -225,14 +225,13 @@ function guardarCreacion() {
 
 
 function filtrarClases(terminoBusqueda) {
-    const clases = obtenerYMostrarClases(); 
 
-    const clasesFiltradas = clases.filter(clase => {
+    const clasesFiltradas = globalCurrentData.filter(clase => {
         // Filtra las clases según el término de búsqueda en el nombre, fecha, horaInicio y horaFin
         return (
-            clase.nombre.toLowerCase().includes(terminoBusqueda) ||
-            clase.fechaCreacion.toLowerCase().includes(terminoBusqueda) ||
-            clase.fechaFin.toLowerCase().includes(terminoBusqueda)
+            clase.nombreClase.toLowerCase().includes(terminoBusqueda) ||
+            clase.inicioClase.toLowerCase().includes(terminoBusqueda) ||
+            clase.finClase.toLowerCase().includes(terminoBusqueda)
         );
     });
 
@@ -251,8 +250,14 @@ document.querySelectorAll('.eliminar-btn').forEach(btn => {
 });
 
 
-function eliminarRegistro(id) {
-    fetch(`http://localhost:8080/gymbuddy/api/entrenamiento/delete/${id}`, {
+async function eliminarRegistro(boton) {
+    const fila = boton.parentNode.parentNode;
+    const numeroFila = fila.rowIndex;
+    console.log(globalCurrentData[numeroFila-1]);
+
+    let id = globalCurrentData[numeroFila-1].id;
+
+    await fetch(`http://localhost:8080/gymbuddy/api/entrenamiento/delete/${id}`, {
         method: 'DELETE',
     })
     .then(response => {

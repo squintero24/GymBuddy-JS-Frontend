@@ -118,9 +118,9 @@ function llenarSelectDesdeBackend(url, idSelect) {
             console.error(`Error: ${error.message}`);
         });
 }
-
-function obtenerYMostrarUsuarios() {
-    fetch('http://localhost:8080/gymbuddy/api/persona/all')
+let globalCurrentData = null; 
+async function obtenerYMostrarUsuarios() {
+    await fetch('http://localhost:8080/gymbuddy/api/persona/all')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error al obtener las Usuarios');
@@ -129,6 +129,7 @@ function obtenerYMostrarUsuarios() {
         })
         .then(usuarios => {
             // Llama a la función para mostrar las usuarios en la tabla
+            globalCurrentData = usuarios;
             mostrarUsuariosEnTabla(usuarios);
         })
         .catch(error => {
@@ -160,7 +161,7 @@ function mostrarUsuariosEnTabla(usuarios) {
                 <button type="button" class="btn btn-primary editar-btn" data-toggle="modal" data-target="#editarModal">
                     Editar
                 </button>
-                <button type="button" class="btn btn-danger eliminar-btn">Eliminar</button>
+                <button type="button" class="btn btn-danger eliminar-btn" onclick="eliminarRegistro(this)">Eliminar</button>
             </td>
         </tr>`;
         tabla.innerHTML += fila;
@@ -305,15 +306,15 @@ function guardarCreacion() {
 
 
 function filtrarUsuarios(terminoBusqueda) {
-    const usuarios = obtenerYMostrarUsuarios(); 
-    const usuariosFiltrados = usuarios.filter(usuario => {
+    //const usuarios = obtenerYMostrarUsuarios(); 
+    const usuariosFiltrados = globalCurrentData.filter(usuario => {
         // Filtra las usuarios según el término de búsqueda en el nombre, fecha, horaInicio y horaFin
         return (
-            usuario.nombre.toLowerCase().includes(terminoBusqueda) ||
-            usuario.apellido.toLowerCase().includes(terminoBusqueda) ||
-            usuario.direccion.toLowerCase().includes(terminoBusqueda) ||
-            usuario.telefono.toLowerCase().includes(terminoBusqueda) ||
-            usuario.fechaFin.toLowerCase().includes(terminoBusqueda)
+            usuario.name.toLowerCase().includes(terminoBusqueda) ||
+            usuario.lastName.toLowerCase().includes(terminoBusqueda) ||
+            usuario.address.toLowerCase().includes(terminoBusqueda) ||
+            usuario.phoneNumber.toLowerCase().includes(terminoBusqueda) ||
+            usuario.fechaHastaPlan.toLowerCase().includes(terminoBusqueda)
         );
     });
 
@@ -325,14 +326,39 @@ document.querySelectorAll('.eliminar-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         // Obtiene la fila actual
         const fila = document.querySelector('.eliminar-btn:focus').closest('tr');
+        console.log(fila);
         const id = fila.dataset.usuarioId;
         eliminarRegistro(id);
     });
 });
 
+function saludar(boton){ 
+    const fila = boton.parentNode.parentNode;
+  
+  // Acceder a la primera celda (índice 0) de la fila y obtener su contenido
+  const informacion1 = fila.cells[0].textContent;
+  
+  // Acceder a la segunda celda (índice 1) de la fila y obtener su contenido
+  const informacion2 = fila.cells[1].textContent;
 
-function eliminarRegistro(id) {
-    fetch(`http://localhost:8080/gymbuddy/api/persona/delete/${id}`, {
+  const numeroFila = fila.rowIndex;
+
+  // Hacer lo que necesites con la información obtenida
+  console.log('Información 1:', informacion1);
+  console.log('Información 2:', informacion2);
+  console.log('jeje', numeroFila);
+  
+}
+
+async function eliminarRegistro(boton) {
+    const fila = boton.parentNode.parentNode;
+    const numeroFila = fila.rowIndex;
+    console.log(globalCurrentData[numeroFila-1]);
+
+    let id = globalCurrentData[numeroFila-1].id;
+
+
+    await fetch(`http://localhost:8080/gymbuddy/api/persona/delete/${id}`, {
         method: 'DELETE',
     })
     .then(response => {

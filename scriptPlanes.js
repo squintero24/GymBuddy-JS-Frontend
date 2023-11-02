@@ -77,7 +77,7 @@ function obtenerPlanPorId(id) {
             mostrarPlanesEnTabla(planes);
 
 });
-
+let globalCurrentData = null; 
 function obtenerYMostrarPlanes() {
     fetch('http://localhost:8080/gymbuddy/api/planes/all')
         .then(response => {
@@ -88,18 +88,13 @@ function obtenerYMostrarPlanes() {
         })
         .then(planes => {
             // Llama a la función para mostrar las planes en la tabla
+            globalCurrentData = planes;
             mostrarPlanesEnTabla(planes);
         })
         .catch(error => {
             console.error('Error:', error);
         });
 };
-const ejemploPlan = [
-    { id: 1, name: 'Semanal', descripcion: 'Duracion de una semana', valor: '15000', fecha: '2023-10-27' },
-    { id: 2, name: 'Mensual', descripcion: 'Duracion de un mes', valor: '60000', fecha: '2023-10-27' },
-    { id: 3, name: 'Trimestral', descripcion: 'Duracion de tres meses', valor: '150000', fecha: '2023-10-27' },
-    { id: 4, name: 'Semestral', descripcion: 'Duracion de seis meses', valor: '300000', fecha: '2023-10-27' },
-];
 
 function mostrarPlanesEnTabla(planes) {
     // Obtén la referencia de la tabla
@@ -119,7 +114,7 @@ function mostrarPlanesEnTabla(planes) {
                 <button type="button" class="btn btn-primary editar-btn" data-toggle="modal" data-target="#editarModal">
                     Editar
                 </button>
-                <button type="button" class="btn btn-danger eliminar-btn">Eliminar</button>
+                <button type="button" class="btn btn-danger eliminar-btn" onclick="eliminarRegistro(this)">Eliminar</button>
             </td>
         </tr>`;
         tabla.innerHTML += fila;
@@ -205,15 +200,13 @@ function guardarCreacion() {
 
 
 function filtrarPlanes(terminoBusqueda) {
-    const planes = obtenerYMostrarPlanes(); 
-
-    const planesFiltradas = planes.filter(plan => {
+    const planesFiltradas = globalCurrentData.filter(plan => {
         // Filtra las planes según el término de búsqueda en el nombre, fecha, horaInicio y horaFin
         return (
             plan.name.toLowerCase().includes(terminoBusqueda) ||
-            plan.descripcion.toLowerCase().includes(terminoBusqueda) ||
-            plan.valor.toLowerCase().includes(terminoBusqueda) ||
-            plan.fecha.toLowerCase().includes(terminoBusqueda)
+            plan.description.toLowerCase().includes(terminoBusqueda) ||
+            plan.value.toString().toLowerCase().includes(terminoBusqueda) ||
+            plan.creationDate.toLowerCase().includes(terminoBusqueda)
         );
     });
 
@@ -221,19 +214,17 @@ function filtrarPlanes(terminoBusqueda) {
     mostrarPlanesEnTabla(planesFiltradas);
 };
 
-document.querySelectorAll('.eliminar-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        // Obtiene la fila actual
-        const fila = this.closest('tr');
-        
-        const id = fila.planes.id;
-        eliminarRegistro(id);
-    });
-});
 
 
-function eliminarRegistro(id) {
-    fetch(`http://localhost:8080/gymbuddy/api/planes/delete//${id}`, {
+
+async function eliminarRegistro(boton) {
+    const fila = boton.parentNode.parentNode;
+    const numeroFila = fila.rowIndex;
+    console.log(globalCurrentData[numeroFila-1]);
+
+    let id = globalCurrentData[numeroFila-1].id;
+
+    await fetch(`http://localhost:8080/gymbuddy/api/planes/delete/${id}`, {
         method: 'DELETE',
     })
     .then(response => {
